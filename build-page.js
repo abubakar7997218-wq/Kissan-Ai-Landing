@@ -1,0 +1,395 @@
+const fs = require('fs');
+const path = require('path');
+
+const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kisan AI — Your AI Agricultural Assistant</title>
+  <meta name="description" content="Kisan AI is an AI-powered agricultural assistant app for farmers. Disease detection, pest analysis, irrigation guidance, weather forecasts, and more — in your language.">
+  <link rel="icon" href="assets/app-icon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --color-bg-cream:#F4F0E4;--color-bg-cream-soft:#EFEBDD;
+      --color-green-primary:#1F7A3D;--color-green-dark:#15381F;
+      --color-green-mid:#2D7C3B;--color-blue-accent:#1968AA;
+      --color-gold-accent:#E6B43B;--color-text-dark:#1A1A1A;
+      --color-text-muted:#6B6B6B;--color-white:#FFFFFF;
+      --radius-sm:8px;--radius-md:14px;--radius-lg:22px;
+      --shadow-card:0 4px 20px rgba(0,0,0,0.07);
+      --shadow-hover:0 8px 32px rgba(0,0,0,0.12);
+      --font-heading:'Poppins',sans-serif;--font-body:'Inter',sans-serif;
+      --font-urdu:'Noto Nastaliq Urdu',serif;--max-width:1200px;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-body);background:var(--color-bg-cream);color:var(--color-text-dark);line-height:1.6;overflow-x:hidden}
+    img{max-width:100%;height:auto;display:block}a{text-decoration:none;color:inherit}ul{list-style:none}
+    .container{max-width:var(--max-width);margin:0 auto;padding:0 24px}
+
+    /* HEADER */
+    .header{position:fixed;top:0;left:0;width:100%;z-index:1000;background:var(--color-bg-cream);transition:box-shadow .3s}
+    .header.scrolled{box-shadow:0 2px 16px rgba(0,0,0,.08)}
+    .header .container{display:flex;align-items:center;justify-content:space-between;height:72px}
+    .header-logo img{height:44px;width:auto}
+    .nav-links{display:flex;align-items:center;gap:32px}
+    .nav-links a{font-family:var(--font-body);font-weight:500;font-size:.95rem;color:var(--color-text-dark);transition:color .2s;position:relative}
+    .nav-links a:hover{color:var(--color-green-primary)}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--color-green-primary);transition:width .2s}
+    .nav-links a:hover::after{width:100%}
+    .btn-primary{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-heading);font-weight:600;font-size:.95rem;color:var(--color-white);background:var(--color-green-primary);padding:12px 28px;border-radius:50px;border:none;cursor:pointer;transition:background .2s,transform .15s}
+    .btn-primary:hover{background:var(--color-green-dark);transform:translateY(-1px)}
+    .btn-secondary{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-heading);font-weight:600;font-size:.95rem;color:var(--color-green-primary);background:transparent;padding:12px 28px;border-radius:50px;border:2px solid var(--color-green-primary);cursor:pointer;transition:background .2s,color .2s,transform .15s}
+    .btn-secondary:hover{background:var(--color-green-primary);color:var(--color-white);transform:translateY(-1px)}
+    .mobile-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+    .mobile-toggle span{display:block;width:26px;height:2.5px;background:var(--color-text-dark);border-radius:2px;transition:transform .3s,opacity .3s}
+
+    /* HERO */
+    .hero{padding-top:72px;min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--color-bg-cream) 0%,var(--color-bg-cream-soft) 100%)}
+    .hero-bg-pattern{position:absolute;top:0;right:0;width:50%;height:100%;opacity:.04;background-image:url('assets/logo-mark.png');background-repeat:no-repeat;background-position:center;background-size:contain}
+    .hero .container{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding-top:40px;padding-bottom:40px}
+    .hero-content{position:relative;z-index:2}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(31,122,61,.1);color:var(--color-green-primary);font-weight:600;font-size:.85rem;padding:6px 16px;border-radius:50px;margin-bottom:20px}
+    .hero-badge svg{width:16px;height:16px}
+    .hero h1{font-family:var(--font-heading);font-weight:800;font-size:clamp(2.2rem,4.5vw,3.4rem);line-height:1.15;color:var(--color-text-dark);margin-bottom:12px}
+    .hero h1 span{color:var(--color-green-primary)}
+    .hero-urdu{font-family:var(--font-urdu);font-size:clamp(1.2rem,2.5vw,1.6rem);color:var(--color-green-primary);direction:rtl;margin-bottom:16px;line-height:2}
+    .hero-desc{font-size:1.1rem;color:var(--color-text-muted);max-width:480px;margin-bottom:32px;line-height:1.7}
+    .hero-buttons{display:flex;gap:16px;flex-wrap:wrap}
+    .hero-video-wrap{position:relative;z-index:2;display:flex;justify-content:center}
+    .phone-frame{position:relative;width:280px;background:var(--color-green-dark);border-radius:36px;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,.18)}
+    .phone-frame .phone-notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:100px;height:24px;background:var(--color-green-dark);border-radius:0 0 14px 14px;z-index:3}
+    .phone-frame video,.phone-frame img{width:100%;border-radius:24px;display:block;object-fit:cover;aspect-ratio:9/19.5}
+
+    /* SECTION SHARED */
+    .section-heading{text-align:center;margin-bottom:56px}
+    .section-heading h2{font-family:var(--font-heading);font-weight:700;font-size:clamp(1.8rem,3.5vw,2.6rem);color:var(--color-text-dark);margin-bottom:12px}
+    .section-heading p{font-size:1.05rem;color:var(--color-text-muted);max-width:600px;margin:0 auto;line-height:1.7}
+    .section-label{display:inline-block;font-family:var(--font-heading);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:2px;color:var(--color-green-primary);margin-bottom:8px}
+
+    /* FEATURES */
+    .features{padding:100px 0;background:var(--color-bg-cream-soft)}
+    .features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+    .feature-card{background:var(--color-white);border-radius:var(--radius-lg);padding:28px 22px;box-shadow:var(--shadow-card);transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column;align-items:center;text-align:center}
+    .feature-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-hover)}
+    .feature-card-img{width:140px;height:260px;border-radius:var(--radius-md);overflow:hidden;margin-bottom:20px;border:3px solid var(--color-bg-cream-soft);flex-shrink:0}
+    .feature-card-img img{width:100%;height:100%;object-fit:cover}
+    .feature-card-icon{width:48px;height:48px;border-radius:12px;background:rgba(31,122,61,.1);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+    .feature-card-icon svg{width:24px;height:24px;stroke:var(--color-green-primary);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .feature-card h3{font-family:var(--font-heading);font-weight:700;font-size:1.05rem;margin-bottom:8px;color:var(--color-text-dark)}
+    .feature-card p{font-size:.9rem;color:var(--color-text-muted);line-height:1.6}
+
+    /* APP PREVIEW */
+    .app-preview{padding:100px 0;background:var(--color-bg-cream);overflow:hidden}
+    .app-preview-phones{display:flex;justify-content:center;align-items:flex-end;gap:32px;margin-top:20px}
+    .app-preview-phones .phone-mockup{width:220px;background:var(--color-green-dark);border-radius:30px;padding:10px;box-shadow:0 16px 48px rgba(0,0,0,.15);transition:transform .3s}
+    .app-preview-phones .phone-mockup:nth-child(2){width:250px;transform:translateY(-20px)}
+    .app-preview-phones .phone-mockup:hover{transform:translateY(-10px)}
+    .app-preview-phones .phone-mockup:nth-child(2):hover{transform:translateY(-30px)}
+    .app-preview-phones .phone-mockup img{width:100%;border-radius:20px;aspect-ratio:9/19.5;object-fit:cover}
+
+    /* HOW IT WORKS */
+    .how-it-works{padding:100px 0;background:var(--color-bg-cream-soft)}
+    .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;position:relative}
+    .steps-grid::before{content:'';position:absolute;top:40px;left:12%;right:12%;height:2px;background:linear-gradient(90deg,var(--color-green-primary),var(--color-gold-accent));opacity:.3}
+    .step-card{text-align:center;position:relative}
+    .step-number{width:80px;height:80px;border-radius:50%;background:var(--color-white);border:3px solid var(--color-green-primary);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:var(--font-heading);font-weight:800;font-size:1.6rem;color:var(--color-green-primary);position:relative;z-index:2}
+    .step-card h3{font-family:var(--font-heading);font-weight:700;font-size:1.05rem;margin-bottom:8px}
+    .step-card p{font-size:.9rem;color:var(--color-text-muted);line-height:1.6}
+
+    /* TEAM */
+    .team{padding:100px 0;background:var(--color-bg-cream)}
+    .team-grid{display:flex;justify-content:center;gap:40px;flex-wrap:wrap}
+    .team-card{text-align:center;width:220px}
+    .team-avatar{width:90px;height:90px;border-radius:50%;background:var(--color-green-primary);color:var(--color-white);font-family:var(--font-heading);font-weight:700;font-size:1.5rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+    .team-card h3{font-family:var(--font-heading);font-weight:700;font-size:1rem;margin-bottom:4px}
+    .team-card p{font-size:.85rem;color:var(--color-text-muted)}
+
+    /* FINAL CTA */
+    .final-cta{padding:100px 0;background:var(--color-green-dark);position:relative;overflow:hidden;text-align:center}
+    .final-cta-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;opacity:.06;pointer-events:none}
+    .final-cta h2{font-family:var(--font-heading);font-weight:800;font-size:clamp(1.8rem,3.5vw,2.8rem);color:var(--color-white);margin-bottom:16px;position:relative;z-index:2}
+    .final-cta p{color:rgba(255,255,255,.75);font-size:1.1rem;max-width:520px;margin:0 auto 36px;position:relative;z-index:2;line-height:1.7}
+    .btn-cta-large{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-heading);font-weight:700;font-size:1.15rem;color:var(--color-green-dark);background:var(--color-gold-accent);padding:18px 44px;border-radius:50px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;z-index:2}
+    .btn-cta-large:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(230,180,59,.35)}
+    .btn-cta-large svg{width:22px;height:22px}
+
+    /* FOOTER */
+    .footer{background:var(--color-green-dark);border-top:1px solid rgba(255,255,255,.08);padding:60px 0 30px;color:var(--color-bg-cream)}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;margin-bottom:40px}
+    .footer-brand img{height:40px;margin-bottom:12px;filter:brightness(0) invert(1)}
+    .footer-brand p{font-size:.9rem;color:rgba(244,240,228,.7);line-height:1.7;max-width:300px}
+    .footer-brand .footer-urdu{font-family:var(--font-urdu);direction:rtl;font-size:.95rem;margin-top:8px;color:rgba(244,240,228,.6)}
+    .footer h4{font-family:var(--font-heading);font-weight:600;font-size:.95rem;margin-bottom:16px;color:var(--color-white)}
+    .footer-links a{display:block;font-size:.9rem;color:rgba(244,240,228,.7);padding:4px 0;transition:color .2s}
+    .footer-links a:hover{color:var(--color-gold-accent)}
+    .footer-social{display:flex;gap:12px;margin-top:8px}
+    .footer-social a{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;transition:background .2s}
+    .footer-social a:hover{background:rgba(255,255,255,.16)}
+    .footer-social svg{width:18px;height:18px;stroke:var(--color-bg-cream);fill:none;stroke-width:2}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .footer-bottom p{font-size:.85rem;color:rgba(244,240,228,.5)}
+    .footer-credit{font-size:.85rem;color:rgba(244,240,228,.5)}
+
+    /* RESPONSIVE */
+    @media(max-width:1024px){.features-grid{grid-template-columns:repeat(2,1fr)}.steps-grid{grid-template-columns:repeat(2,1fr)}.steps-grid::before{display:none}.footer-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:768px){.hero .container{grid-template-columns:1fr;text-align:center}.hero-desc{margin:0 auto 32px}.hero-buttons{justify-content:center}.hero-video-wrap{margin-top:20px}.phone-frame{width:220px}.nav-links{display:none}.nav-links.active{display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:var(--color-bg-cream);padding:24px;box-shadow:0 8px 24px rgba(0,0,0,.08);gap:16px}.mobile-toggle{display:flex}.features-grid{grid-template-columns:1fr;max-width:360px;margin:0 auto}.app-preview-phones{gap:16px}.app-preview-phones .phone-mockup{width:140px}.app-preview-phones .phone-mockup:nth-child(2){width:160px}.steps-grid{grid-template-columns:1fr;max-width:320px;margin:0 auto}.footer-grid{grid-template-columns:1fr;text-align:center}.footer-brand p{margin:0 auto}.footer-bottom{justify-content:center;text-align:center}.footer-social{justify-content:center}}
+    @media(max-width:480px){.hero h1{font-size:1.8rem}.hero-buttons{flex-direction:column;align-items:center}.app-preview-phones .phone-mockup{width:110px}.app-preview-phones .phone-mockup:nth-child(2){width:130px}}
+  </style>
+</head>
+<body>
+
+  <!-- A. HEADER -->
+  <header class="header" id="header">
+    <div class="container">
+      <a href="#" class="header-logo">
+        <img src="assets/logo.png" alt="Kisan AI Logo">
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it Works</a>
+        <a href="#app-preview">App Preview</a>
+        <a href="#team">Team</a>
+        <a href="assets/kisan-ai.apk" download class="btn-primary">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download App
+        </a>
+      </nav>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- B. HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-pattern"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          AI-Powered Agriculture
+        </div>
+        <h1><span>Kisan AI</span> — Your AI Agricultural Assistant</h1>
+        <div class="hero-urdu" lang="ur" dir="rtl">\u0622\u067E \u06A9\u0627 \u0632\u0631\u0639\u06CC \u0633\u0627\u062A\u06BE\u06CC\u060C \u0628\u0631 \u0642\u062F\u0645 \u06C1\u0645\u0631\u0627\u06C1</div>
+        <p class="hero-desc">Empowering farmers with artificial intelligence. Detect crop diseases, get irrigation guidance, check live weather, and more — all in your language, all in one app.</p>
+        <div class="hero-buttons">
+          <a href="assets/kisan-ai.apk" download class="btn-primary">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download App
+          </a>
+          <a href="#features" class="btn-secondary">See Features</a>
+        </div>
+      </div>
+      <div class="hero-video-wrap">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <video autoplay muted loop playsinline src="assets/hero-video.mp4"></video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- C. FEATURES -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-heading">
+        <span class="section-label">Features</span>
+        <h2>Everything a farmer needs, in one app</h2>
+        <p>From disease detection to weather forecasts, Kisan AI brings powerful AI tools directly to your phone — built for the field.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-card-img"><img src="assets/screens/disease-review-photo.jpeg" alt="Disease Detection - review captured leaf photo"></div>
+          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+          <h3>Disease Detection</h3>
+          <p>AI scans crop leaf photos and detects diseases instantly.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-img"><img src="assets/screens/disease-analyzing.jpeg" alt="AI analyzing your crop"></div>
+          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+          <h3>Pest Detection</h3>
+          <p>Identify pest infestations early with AI photo analysis.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-img"><img src="assets/screens/dashboard-home.jpeg" alt="Home dashboard with quick actions"></div>
+          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <h3>Crop Recommendation</h3>
+          <p>Get AI-driven crop suggestions based on your soil, water, and season.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-img"><img src="assets/screens/irrigation-guide.jpeg" alt="Irrigation Guide form"></div>
+          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div>
+          <h3>Irrigation Guide</h3>
+          <p>Personalized irrigation schedules based on plot, crop, and water availability.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-img"><img src="assets/screens/ask-kisan-ai.jpeg" alt="Ask Kisan AI chatbot screen"></div>
+          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <h3>Ask Kisan AI</h3>
+          <p>A multilingual AI chatbot that answers farming questions instantly, in your own language.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-img"><img src="assets/screens/weather-details.jpeg" alt="Full weather screen with forecast"></div>
+          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>
+          <h3>Live Weather &amp; Forecast</h3>
+          <p>Real-time temperature, humidity, UV index, wind, and a 3-day forecast for your exact location.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-img"><img src="assets/screens/dashboard-home-alt.jpeg" alt="Dashboard with quick actions grid"></div>
+          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+          <h3>My Plots &amp; My Plants</h3>
+          <p>Track every plot and plant you own, with full history of past scans and recommendations.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-img"><img src="assets/screens/settings-language.jpeg" alt="Settings screen with language selector"></div>
+          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <h3>Multilingual Support</h3>
+          <p>Fully available in English, Urdu, Punjabi, Sindhi, Pashto, and Balochi, so every farmer can use it comfortably.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- D. APP PREVIEW -->
+  <section class="app-preview" id="app-preview">
+    <div class="container">
+      <div class="section-heading">
+        <span class="section-label">App Preview</span>
+        <h2>A dashboard built for the field</h2>
+        <p>Clean, intuitive, and designed for farmers on the go. Quick actions, live weather, and AI-powered tools — all one tap away.</p>
+      </div>
+      <div class="app-preview-phones">
+        <div class="phone-mockup"><img src="assets/screens/splash.jpeg" alt="Kisan AI splash screen"></div>
+        <div class="phone-mockup"><img src="assets/screens/dashboard-home.jpeg" alt="Kisan AI home dashboard"></div>
+        <div class="phone-mockup"><img src="assets/screens/onboarding.jpeg" alt="Kisan AI onboarding screen"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- E. HOW IT WORKS -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="section-heading">
+        <span class="section-label">How it Works</span>
+        <h2>Get started in four simple steps</h2>
+        <p>From download to AI-powered insights in under two minutes.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3>Download the App</h3>
+          <p>Get the APK directly from this page and install it on your Android device.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3>Create Your Account</h3>
+          <p>Sign up in seconds and set your preferred language and farming region.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3>Scan or Ask</h3>
+          <p>Take a photo of a crop leaf, or ask a question through the AI chatbot.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">4</div>
+          <h3>Get AI Recommendations</h3>
+          <p>Receive instant, actionable insights powered by artificial intelligence.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- F. TEAM -->
+  <section class="team" id="team">
+    <div class="container">
+      <div class="section-heading">
+        <span class="section-label">Our Team</span>
+        <h2>Built at the Alibaba Hackathon</h2>
+        <p>A passionate team building AI tools for the people who feed the world.</p>
+      </div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">HA</div>
+          <h3>Hafiz Muhammad Abubakar Rana</h3>
+          <p>Co-Founder &amp; Developer</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">AR</div>
+          <h3>Adnan Rana</h3>
+          <p>Co-Founder &amp; Developer</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">AT</div>
+          <h3>Ali Turab</h3>
+          <p>Co-Founder &amp; Developer</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- G. FINAL CTA -->
+  <section class="final-cta" id="download">
+    <img src="assets/logo-mark.png" alt="" class="final-cta-bg" aria-hidden="true">
+    <div class="container">
+      <h2>Get Kisan AI on your phone today</h2>
+      <p>Download the app and bring AI-powered agricultural insights to your fields — free, multilingual, and built for farmers.</p>
+      <a href="assets/kisan-ai.apk" download class="btn-cta-large">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download APK
+      </a>
+    </div>
+  </section>
+
+  <!-- H. FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="assets/logo.png" alt="Kisan AI Logo">
+          <p>AI-powered agricultural assistant for every farmer. Detect diseases, get irrigation advice, and access real-time weather — all in one app.</p>
+          <div class="footer-urdu" lang="ur" dir="rtl">\u0622\u067E \u06A9\u0627 \u0632\u0631\u0639\u06CC \u0633\u0627\u062A\u06BE\u06CC\u060C \u0628\u0631 \u0642\u062F\u0645 \u06C1\u0645\u0631\u0627\u06C1</div>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <div class="footer-links">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How it Works</a>
+            <a href="#team">Team</a>
+            <a href="#download">Download</a>
+          </div>
+        </div>
+        <div>
+          <h4>Connect</h4>
+          <div class="footer-social">
+            <a href="#" aria-label="Email"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+            <a href="#" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+            <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Kisan AI. All rights reserved.</p>
+        <p class="footer-credit">Made by Hafiz Muhammad Abubakar Rana, Adnan Rana &amp; Ali Turab — Alibaba Hackathon</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    var header=document.getElementById('header');
+    window.addEventListener('scroll',function(){header.classList.toggle('scrolled',window.scrollY>20)});
+    var mobileToggle=document.getElementById('mobileToggle');
+    var navLinks=document.getElementById('navLinks');
+    mobileToggle.addEventListener('click',function(){navLinks.classList.toggle('active')});
+    navLinks.querySelectorAll('a').forEach(function(link){link.addEventListener('click',function(){navLinks.classList.remove('active')})});
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor){anchor.addEventListener('click',function(e){var target=document.querySelector(this.getAttribute('href'));if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'})}})});
+  </script>
+</body>
+</html>`;
+
+fs.writeFileSync(path.join(__dirname, 'index.html'), html, 'utf8');
+console.log('index.html written successfully!');

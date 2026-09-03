@@ -142,9 +142,74 @@
     .footer-credit{font-size:.85rem;color:rgba(244,240,228,.5)}
 
     /* RESPONSIVE */
-    @media(max-width:1024px){.highlights-grid{grid-template-columns:repeat(2,1fr)}.steps-grid{grid-template-columns:repeat(2,1fr)}.steps-grid::before{display:none}.footer-grid{grid-template-columns:1fr 1fr}}
-    @media(max-width:768px){.hero .container{grid-template-columns:1fr;text-align:center}.hero-desc{margin:0 auto 32px}.hero-buttons{justify-content:center}.hero-video-wrap{margin-top:20px}.phone-frame{width:220px}.nav-links{display:none}.nav-links.active{display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:var(--color-bg-cream);padding:24px;box-shadow:0 8px 24px rgba(0,0,0,.08);gap:16px}.mobile-toggle{display:flex}.highlights-grid{grid-template-columns:1fr}.carousel-item .phone-mockup{width:160px}.steps-grid{grid-template-columns:1fr;max-width:320px;margin:0 auto}.footer-grid{grid-template-columns:1fr;text-align:center}.footer-brand p{margin:0 auto}.footer-bottom{justify-content:center;text-align:center}.footer-social{justify-content:center}}
-    @media(max-width:480px){.hero h1{font-size:1.8rem}.hero-buttons{flex-direction:column;align-items:center}.carousel-item .phone-mockup{width:140px}}
+    @media(max-width:1024px){
+      .highlights-grid{grid-template-columns:repeat(2,1fr)}
+      .steps-grid{grid-template-columns:repeat(2,1fr)}
+      .steps-grid::before{display:none}
+      .footer-grid{grid-template-columns:1fr 1fr}
+      .hero .container{gap:32px}
+    }
+    @media(max-width:768px){
+      .hero .container{grid-template-columns:1fr;text-align:center;padding-top:24px;padding-bottom:24px}
+      .hero-desc{margin:0 auto 28px}
+      .hero-buttons{justify-content:center}
+      .hero-video-wrap{margin-top:20px}
+      .phone-frame{width:220px}
+      .nav-links{display:none}
+      .nav-links.active{display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:var(--color-bg-cream);padding:24px;box-shadow:0 8px 24px rgba(0,0,0,.08);gap:16px}
+      .nav-links.active .btn-primary{width:100%;justify-content:center}
+      .mobile-toggle{display:flex}
+      .highlights{padding:72px 0}
+      .highlights-grid{grid-template-columns:1fr}
+      .highlight-thumb{height:200px}
+      .app-preview{padding:72px 0}
+      .carousel-track{padding:16px 40px 24px;gap:20px}
+      .carousel-wrap::before,.carousel-wrap::after{width:40px}
+      .carousel-item .phone-mockup{width:160px}
+      .how-it-works{padding:72px 0}
+      .steps-grid{grid-template-columns:1fr;max-width:320px;margin:0 auto}
+      .team{padding:72px 0}
+      .team-grid{gap:28px}
+      .final-cta{padding:72px 0}
+      .footer{padding:48px 0 24px}
+      .footer-grid{grid-template-columns:1fr;text-align:center;gap:32px}
+      .footer-brand p{margin:0 auto}
+      .footer-bottom{justify-content:center;text-align:center;flex-direction:column}
+      .footer-social{justify-content:center}
+    }
+    @media(max-width:480px){
+      .container{padding:0 16px}
+      .hero{min-height:auto;padding-top:72px}
+      .hero h1{font-size:1.6rem}
+      .hero-urdu{font-size:1.1rem}
+      .hero-desc{font-size:0.95rem}
+      .hero-buttons{flex-direction:column;align-items:center}
+      .hero-buttons .btn-primary,.hero-buttons .btn-secondary{width:100%;justify-content:center}
+      .phone-frame{width:180px}
+      .section-heading{margin-bottom:36px}
+      .section-heading h2{font-size:1.5rem}
+      .section-heading p{font-size:0.95rem}
+      .highlights{padding:56px 0}
+      .highlight-card{padding:20px 18px}
+      .highlight-thumb{height:180px}
+      .carousel-track{padding:12px 24px 20px;gap:16px}
+      .carousel-wrap::before,.carousel-wrap::after{width:24px}
+      .carousel-item .phone-mockup{width:140px;border-radius:22px;padding:8px}
+      .carousel-caption h4{font-size:0.85rem}
+      .carousel-caption p{font-size:0.72rem}
+      .how-it-works{padding:56px 0}
+      .step-number{width:64px;height:64px;font-size:1.3rem}
+      .team{padding:56px 0}
+      .team-card{width:180px}
+      .team-avatar{width:72px;height:72px;font-size:1.2rem}
+      .final-cta{padding:56px 0}
+      .final-cta h2{font-size:1.5rem}
+      .final-cta p{font-size:0.95rem}
+      .btn-cta-large{padding:14px 32px;font-size:1rem}
+      .footer{padding:40px 0 20px}
+      .footer h4{font-size:0.9rem}
+      .footer-links a{font-size:0.85rem}
+    }
   </style>
 </head>
 <body>
@@ -222,7 +287,7 @@
           <span class="highlight-badge">LIVE &middot; GPS-BOUND</span>
         </div>
         <div class="highlight-card">
-          <div class="highlight-thumb"><img src="assets/highlights/crop-spraying.jpeg" alt="Green crop field rows ready for treatment"></div>
+          <div class="highlight-thumb"><img src="assets/highlights/pest-macro.jpeg" alt="Close-up of an insect pest on a green leaf"></div>
           <h3>Pest Detection</h3>
           <p>Identify pest infestations early by capturing a photo. The AI analyses the image and flags the pest type so you can act before damage spreads.</p>
           <span class="highlight-badge">PHOTO AI &middot; EARLY ALERT</span>
@@ -387,9 +452,8 @@
         <div>
           <h4>Connect</h4>
           <div class="footer-social">
-            <a href="#" aria-label="Email"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+            <a href="mailto:abubakar7997218@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
             <a href="#" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
-            <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
           </div>
         </div>
       </div>

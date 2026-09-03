@@ -68,26 +68,35 @@
     .section-heading p{font-size:1.05rem;color:var(--color-text-muted);max-width:600px;margin:0 auto;line-height:1.7}
     .section-label{display:inline-block;font-family:var(--font-heading);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:2px;color:var(--color-green-primary);margin-bottom:8px}
 
-    /* FEATURES */
-    .features{padding:100px 0;background:var(--color-bg-cream-soft)}
-    .features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
-    .feature-card{background:var(--color-white);border-radius:var(--radius-lg);padding:28px 22px;box-shadow:var(--shadow-card);transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column;align-items:center;text-align:center}
-    .feature-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-hover)}
-    .feature-card-img{width:140px;height:260px;border-radius:var(--radius-md);overflow:hidden;margin-bottom:20px;border:3px solid var(--color-bg-cream-soft);flex-shrink:0}
-    .feature-card-img img{width:100%;height:100%;object-fit:cover}
-    .feature-card-icon{width:48px;height:48px;border-radius:12px;background:rgba(31,122,61,.1);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-    .feature-card-icon svg{width:24px;height:24px;stroke:var(--color-green-primary);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-    .feature-card h3{font-family:var(--font-heading);font-weight:700;font-size:1.05rem;margin-bottom:8px;color:var(--color-text-dark)}
-    .feature-card p{font-size:.9rem;color:var(--color-text-muted);line-height:1.6}
+    /* HIGHLIGHTS */
+    .highlights{padding:100px 0;background:var(--color-green-dark)}
+    .highlights .section-heading h2{color:var(--color-white)}
+    .highlights .section-heading p{color:rgba(244,240,228,.65)}
+    .highlights .section-label{color:var(--color-gold-accent)}
+    .highlights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+    .highlight-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-lg);padding:28px 24px;transition:transform .25s,background .25s}
+    .highlight-card:hover{transform:translateY(-6px);background:rgba(255,255,255,.1)}
+    .highlight-thumb{width:100%;height:180px;border-radius:var(--radius-md);overflow:hidden;margin-bottom:20px}
+    .highlight-thumb img{width:100%;height:100%;object-fit:cover}
+    .highlight-card h3{font-family:var(--font-heading);font-weight:700;font-size:1.1rem;color:var(--color-white);margin-bottom:10px;line-height:1.3}
+    .highlight-card p{font-size:.88rem;color:rgba(244,240,228,.6);line-height:1.65;margin-bottom:16px}
+    .highlight-badge{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-gold-accent);border:1px solid rgba(230,180,59,.35);border-radius:50px;padding:5px 14px}
 
-    /* APP PREVIEW */
-    .app-preview{padding:100px 0;background:var(--color-bg-cream);overflow:hidden}
-    .app-preview-phones{display:flex;justify-content:center;align-items:flex-end;gap:32px;margin-top:20px}
-    .app-preview-phones .phone-mockup{width:220px;background:var(--color-green-dark);border-radius:30px;padding:10px;box-shadow:0 16px 48px rgba(0,0,0,.15);transition:transform .3s}
-    .app-preview-phones .phone-mockup:nth-child(2){width:250px;transform:translateY(-20px)}
-    .app-preview-phones .phone-mockup:hover{transform:translateY(-10px)}
-    .app-preview-phones .phone-mockup:nth-child(2):hover{transform:translateY(-30px)}
-    .app-preview-phones .phone-mockup img{width:100%;border-radius:20px;aspect-ratio:9/19.5;object-fit:cover}
+    /* APP PREVIEW CAROUSEL */
+    .app-preview{padding:100px 0;background:var(--color-bg-cream);position:relative}
+    .carousel-wrap{position:relative;margin-top:20px}
+    .carousel-wrap::before,.carousel-wrap::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none}
+    .carousel-wrap::before{left:0;background:linear-gradient(90deg,var(--color-bg-cream),transparent)}
+    .carousel-wrap::after{right:0;background:linear-gradient(-90deg,var(--color-bg-cream),transparent)}
+    .carousel-track{display:flex;gap:28px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:20px 60px 30px}
+    .carousel-track::-webkit-scrollbar{display:none}
+    .carousel-item{flex-shrink:0;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;gap:16px}
+    .carousel-item .phone-mockup{width:200px;background:var(--color-green-dark);border-radius:30px;padding:10px;box-shadow:0 16px 48px rgba(0,0,0,.15);transition:transform .3s}
+    .carousel-item .phone-mockup:hover{transform:translateY(-8px)}
+    .carousel-item .phone-mockup img{width:100%;border-radius:20px;aspect-ratio:9/19.5;object-fit:cover}
+    .carousel-caption{text-align:center}
+    .carousel-caption h4{font-family:var(--font-heading);font-weight:700;font-size:.95rem;color:var(--color-green-primary)}
+    .carousel-caption p{font-size:.8rem;color:var(--color-text-muted);margin-top:2px}
 
     /* HOW IT WORKS */
     .how-it-works{padding:100px 0;background:var(--color-bg-cream-soft)}
@@ -133,9 +142,9 @@
     .footer-credit{font-size:.85rem;color:rgba(244,240,228,.5)}
 
     /* RESPONSIVE */
-    @media(max-width:1024px){.features-grid{grid-template-columns:repeat(2,1fr)}.steps-grid{grid-template-columns:repeat(2,1fr)}.steps-grid::before{display:none}.footer-grid{grid-template-columns:1fr 1fr}}
-    @media(max-width:768px){.hero .container{grid-template-columns:1fr;text-align:center}.hero-desc{margin:0 auto 32px}.hero-buttons{justify-content:center}.hero-video-wrap{margin-top:20px}.phone-frame{width:220px}.nav-links{display:none}.nav-links.active{display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:var(--color-bg-cream);padding:24px;box-shadow:0 8px 24px rgba(0,0,0,.08);gap:16px}.mobile-toggle{display:flex}.features-grid{grid-template-columns:1fr;max-width:360px;margin:0 auto}.app-preview-phones{gap:16px}.app-preview-phones .phone-mockup{width:140px}.app-preview-phones .phone-mockup:nth-child(2){width:160px}.steps-grid{grid-template-columns:1fr;max-width:320px;margin:0 auto}.footer-grid{grid-template-columns:1fr;text-align:center}.footer-brand p{margin:0 auto}.footer-bottom{justify-content:center;text-align:center}.footer-social{justify-content:center}}
-    @media(max-width:480px){.hero h1{font-size:1.8rem}.hero-buttons{flex-direction:column;align-items:center}.app-preview-phones .phone-mockup{width:110px}.app-preview-phones .phone-mockup:nth-child(2){width:130px}}
+    @media(max-width:1024px){.highlights-grid{grid-template-columns:repeat(2,1fr)}.steps-grid{grid-template-columns:repeat(2,1fr)}.steps-grid::before{display:none}.footer-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:768px){.hero .container{grid-template-columns:1fr;text-align:center}.hero-desc{margin:0 auto 32px}.hero-buttons{justify-content:center}.hero-video-wrap{margin-top:20px}.phone-frame{width:220px}.nav-links{display:none}.nav-links.active{display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:var(--color-bg-cream);padding:24px;box-shadow:0 8px 24px rgba(0,0,0,.08);gap:16px}.mobile-toggle{display:flex}.highlights-grid{grid-template-columns:1fr}.carousel-item .phone-mockup{width:160px}.steps-grid{grid-template-columns:1fr;max-width:320px;margin:0 auto}.footer-grid{grid-template-columns:1fr;text-align:center}.footer-brand p{margin:0 auto}.footer-bottom{justify-content:center;text-align:center}.footer-social{justify-content:center}}
+    @media(max-width:480px){.hero h1{font-size:1.8rem}.hero-buttons{flex-direction:column;align-items:center}.carousel-item .phone-mockup{width:140px}}
   </style>
 </head>
 <body>
@@ -147,7 +156,7 @@
         <img src="assets/logo.png" alt="Kisan AI Logo">
       </a>
       <nav class="nav-links" id="navLinks">
-        <a href="#features">Features</a>
+        <a href="#highlights">Features</a>
         <a href="#how-it-works">How it Works</a>
         <a href="#app-preview">App Preview</a>
         <a href="#team">Team</a>
@@ -179,7 +188,7 @@
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download App
           </a>
-          <a href="#features" class="btn-secondary">See Features</a>
+          <a href="#highlights" class="btn-secondary">See Features</a>
         </div>
       </div>
       <div class="hero-video-wrap">
@@ -191,62 +200,50 @@
     </div>
   </section>
 
-  <!-- C. FEATURES -->
-  <section class="features" id="features">
+  <!-- C. HIGHLIGHTS -->
+  <section class="highlights" id="highlights">
     <div class="container">
       <div class="section-heading">
-        <span class="section-label">Features</span>
-        <h2>Everything a farmer needs, in one app</h2>
-        <p>From disease detection to weather forecasts, Kisan AI brings powerful AI tools directly to your phone — built for the field.</p>
+        <span class="section-label">What We Offer</span>
+        <h2>AI Tools Built for the Field</h2>
+        <p>Six powerful features that put world-class agricultural expertise into every farmer's pocket.</p>
       </div>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-card-img"><img src="assets/screens/disease-review-photo.jpeg" alt="Disease Detection - review captured leaf photo"></div>
-          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-          <h3>Disease Detection</h3>
-          <p>AI scans crop leaf photos and detects diseases instantly.</p>
+      <div class="highlights-grid">
+        <div class="highlight-card">
+          <div class="highlight-thumb"><img src="https://images.unsplash.com/photo-1628614581635-b61f6f0e5b70?w=400&h=300&fit=crop&auto=format" alt="Close-up of a diseased leaf with visible blight spots"></div>
+          <h3>Disease &amp; Pest Detection</h3>
+          <p>Point your camera at any leaf. Our vision AI instantly diagnoses Early Blight, Powdery Mildew, Aphid infestations, and 50+ threats with lab-grade accuracy.</p>
+          <span class="highlight-badge">VISION AI &middot; INSTANT</span>
         </div>
-        <div class="feature-card">
-          <div class="feature-card-img"><img src="assets/screens/disease-analyzing.jpeg" alt="AI analyzing your crop"></div>
-          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
-          <h3>Pest Detection</h3>
-          <p>Identify pest infestations early with AI photo analysis.</p>
+        <div class="highlight-card">
+          <div class="highlight-thumb"><img src="https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=400&h=300&fit=crop&auto=format" alt="Dramatic sky with clouds over green farmland at sunrise"></div>
+          <h3>Hyper-Local Weather Intel</h3>
+          <p>Real-time temperature, humidity, wind, and rainfall alerts calibrated to your exact field location. Precision irrigation scheduling that saves water and maximizes yield.</p>
+          <span class="highlight-badge">LIVE API &middot; GPS-BOUND</span>
         </div>
-        <div class="feature-card">
-          <div class="feature-card-img"><img src="assets/screens/dashboard-home.jpeg" alt="Home dashboard with quick actions"></div>
-          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <h3>Crop Recommendation</h3>
-          <p>Get AI-driven crop suggestions based on your soil, water, and season.</p>
+        <div class="highlight-card">
+          <div class="highlight-thumb"><img src="https://images.unsplash.com/photo-1571035198274-76f2e8a520d4?w=400&h=300&fit=crop&auto=format" alt="Crop spraying and pesticide application in a green field"></div>
+          <h3>Precise Treatment Plans</h3>
+          <p>Named pesticides, exact dosages in Kanal/Marla units, application windows, and safety intervals &mdash; aligned to Punjab agriculture department standards.</p>
+          <span class="highlight-badge">LOCALIZED &middot; SAFE</span>
         </div>
-        <div class="feature-card">
-          <div class="feature-card-img"><img src="assets/screens/irrigation-guide.jpeg" alt="Irrigation Guide form"></div>
-          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div>
-          <h3>Irrigation Guide</h3>
-          <p>Personalized irrigation schedules based on plot, crop, and water availability.</p>
+        <div class="highlight-card">
+          <div class="highlight-thumb"><img src="https://images.unsplash.com/photo-1595841696377-41a1e4453b12?w=400&h=300&fit=crop&auto=format" alt="Farmer using a smartphone in an agricultural field"></div>
+          <h3>Multilingual AI Chat</h3>
+          <p>Ask anything in Urdu, English, or Punjabi &mdash; by voice or text. Get expert agronomic answers as if you had a PhD agricultural scientist on call 24/7.</p>
+          <span class="highlight-badge">24/7 &middot; MULTILINGUAL</span>
         </div>
-        <div class="feature-card">
-          <div class="feature-card-img"><img src="assets/screens/ask-kisan-ai.jpeg" alt="Ask Kisan AI chatbot screen"></div>
-          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-          <h3>Ask Kisan AI</h3>
-          <p>A multilingual AI chatbot that answers farming questions instantly, in your own language.</p>
+        <div class="highlight-card">
+          <div class="highlight-thumb"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop&auto=format" alt="Green seedlings growing from rich dark soil"></div>
+          <h3>Crop &amp; Season Planner</h3>
+          <p>Smart recommendations based on exact soil type (Loamy, Sandy, Clay), available water, season, and historical climate data for your specific district.</p>
+          <span class="highlight-badge">DATA-DRIVEN</span>
         </div>
-        <div class="feature-card">
-          <div class="feature-card-img"><img src="assets/screens/weather-details.jpeg" alt="Full weather screen with forecast"></div>
-          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>
-          <h3>Live Weather &amp; Forecast</h3>
-          <p>Real-time temperature, humidity, UV index, wind, and a 3-day forecast for your exact location.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-card-img"><img src="assets/screens/dashboard-home-alt.jpeg" alt="Dashboard with quick actions grid"></div>
-          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
-          <h3>My Plots &amp; My Plants</h3>
-          <p>Track every plot and plant you own, with full history of past scans and recommendations.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-card-img"><img src="assets/screens/settings-language.jpeg" alt="Settings screen with language selector"></div>
-          <div class="feature-card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
-          <h3>Multilingual Support</h3>
-          <p>Fully available in English, Urdu, Punjabi, Sindhi, Pashto, and Balochi, so every farmer can use it comfortably.</p>
+        <div class="highlight-card">
+          <div class="highlight-thumb"><img src="https://images.unsplash.com/photo-1560493676-04071c5f467b?w=400&h=300&fit=crop&auto=format" alt="Aerial view of irrigated farmland with center-pivot irrigation"></div>
+          <h3>Plot Tracker &amp; Irrigation Guide</h3>
+          <p>Manage multiple plots with Kanal-based irrigation calculators, multi-season crop history, and automated scheduling reminders.</p>
+          <span class="highlight-badge">MULTI-PLOT</span>
         </div>
       </div>
     </div>
@@ -260,10 +257,37 @@
         <h2>A dashboard built for the field</h2>
         <p>Clean, intuitive, and designed for farmers on the go. Quick actions, live weather, and AI-powered tools — all one tap away.</p>
       </div>
-      <div class="app-preview-phones">
-        <div class="phone-mockup"><img src="assets/screens/splash.jpeg" alt="Kisan AI splash screen"></div>
-        <div class="phone-mockup"><img src="assets/screens/dashboard-home.jpeg" alt="Kisan AI home dashboard"></div>
-        <div class="phone-mockup"><img src="assets/screens/onboarding.jpeg" alt="Kisan AI onboarding screen"></div>
+      <div class="carousel-wrap">
+        <div class="carousel-track">
+          <div class="carousel-item">
+            <div class="phone-mockup"><img src="assets/screens/dashboard-home.jpeg" alt="Home Dashboard"></div>
+            <div class="carousel-caption"><h4>Home Dashboard</h4><p>Quick access to all features</p></div>
+          </div>
+          <div class="carousel-item">
+            <div class="phone-mockup"><img src="assets/screens/disease-review-photo.jpeg" alt="Disease Detection"></div>
+            <div class="carousel-caption"><h4>Disease Detection</h4><p>AI-powered leaf diagnosis</p></div>
+          </div>
+          <div class="carousel-item">
+            <div class="phone-mockup"><img src="assets/screens/ask-kisan-ai.jpeg" alt="AI Chat Assistant"></div>
+            <div class="carousel-caption"><h4>AI Chat Assistant</h4><p>Urdu &middot; English &middot; Punjabi</p></div>
+          </div>
+          <div class="carousel-item">
+            <div class="phone-mockup"><img src="assets/screens/weather-details.jpeg" alt="Weather Intelligence"></div>
+            <div class="carousel-caption"><h4>Weather Intelligence</h4><p>Hyper-local field forecasts</p></div>
+          </div>
+          <div class="carousel-item">
+            <div class="phone-mockup"><img src="assets/screens/irrigation-guide.jpeg" alt="Crop Planner"></div>
+            <div class="carousel-caption"><h4>Crop Planner</h4><p>Season &amp; soil-based advice</p></div>
+          </div>
+          <div class="carousel-item">
+            <div class="phone-mockup"><img src="assets/screens/dashboard-home-alt.jpeg" alt="My Plots"></div>
+            <div class="carousel-caption"><h4>My Plots</h4><p>Track every plot and plant</p></div>
+          </div>
+          <div class="carousel-item">
+            <div class="phone-mockup"><img src="assets/screens/settings-language.jpeg" alt="Settings"></div>
+            <div class="carousel-caption"><h4>Settings</h4><p>6 languages supported</p></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -354,7 +378,7 @@
         <div>
           <h4>Quick Links</h4>
           <div class="footer-links">
-            <a href="#features">Features</a>
+            <a href="#highlights">Features</a>
             <a href="#how-it-works">How it Works</a>
             <a href="#team">Team</a>
             <a href="#download">Download</a>

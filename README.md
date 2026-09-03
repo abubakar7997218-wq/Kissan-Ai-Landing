@@ -117,8 +117,8 @@ Three download buttons on the page (header, hero, and final CTA section) all lin
 
 | Name | Role |
 |---|---|
-| **Hafiz Muhammad Abubakar ** | Founder & Developer |
-| **Rana Adnan ** | Founder & Developer |
+| **Hafiz Muhammad Abubakar** | Founder & Developer |
+| **Rana Adnan** | Founder & Developer |
 | **Rana Ali Turab** | Founder & Developer |
 
 Built at the **Alibaba Hackathon**.
